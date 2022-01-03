@@ -1,5 +1,7 @@
 let scoreBlock;
+let highScoreBlock;
 let score = 0;
+highScore = localStorage.getItem('localHighScore');
 
 const config = {
 	step: 0,
@@ -26,6 +28,7 @@ let berry = {
 let canvas = document.querySelector("#game-canvas");
 let context = canvas.getContext("2d");
 scoreBlock = document.querySelector(".game-score .score-count");
+highScoreBlock = document.querySelector(".game-highscore .highscore-count")
 drawScore();
 
 function gameLoop() {
@@ -97,7 +100,6 @@ function collisionBorder() {
 function refreshGame() {
 	score = 0;
 	drawScore();
-
 	swal("You lose", "Try again!", "error");
 
 	snake.x = 160;
@@ -124,11 +126,16 @@ function randomPositionBerry() {
 
 function incScore() {
 	score++;
+	if (score > highScore) {
+    	highScore = score;
+		localStorage.setItem('localHighScore', highScore);
+	}
 	drawScore();
 }
 
 function drawScore() {
 	scoreBlock.innerHTML = score;
+	highScoreBlock.innerHTML = highScore;
 }
 
 function getRandomInt(min, max) {
